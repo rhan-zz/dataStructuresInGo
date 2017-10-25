@@ -1,4 +1,4 @@
-﻿/*
+/*
 Package list implements a simple library for list structure.
 
 author:heavy
@@ -53,6 +53,14 @@ func (list *List) match(data1 Object, data2 Object) int {
     return matc(data1, data2)
 }
 
+func createNode(data Object) *Node {
+    node := new(Node)
+    (*node).data = data
+    (*node).next = nil
+
+    return node
+}
+
 func nextNode(node *Node) *Node {
     return (*node).next
 }
@@ -67,6 +75,56 @@ func (list *List) getTail() *Node {
 
 func (node *Node) getData() Object {
     return (*node).data
+}
+
+func (list *List) insertAfterNode(node *Node, data Object) bool {
+    //TODO:
+    return true
+}
+
+// remove node at index
+func (list *List) removeAt(index uint) Object{
+    size := list.GetSize()
+    if index >= size { // out of rang
+        return nil
+    } else if size == 1 { // only one
+        node := list.getHead()
+        (*list).head = nil
+        (*list).tail = nil
+        (*list).size = 0
+        retrun (*node).data
+    } else if index == 0 { // remove head
+        node := list.getHead()
+        (*list).head = (*node).next
+        (*list).size--
+
+        return (*list).data
+    } else if index == (size -1) { // remove tail
+        preNode := list.getHead()
+        for i := 2; i < size; i++ {
+            preNode = (*preNode).next
+        }
+
+        tail := list.getTail()
+        (*list).tail = preNode
+        preNode.next = nil
+        (*list).size--
+
+        return (*tail).data
+    } else { // middle
+        preNode := list.getHead()
+        for i := 2; i < index; i++ {
+            preNode = (*preNode).next
+        }
+
+        node := (*preNode).next
+        nxtNode := (*node).next
+        (*node).next = nxtNode
+
+        (*list).size--
+
+        return (*node).data
+    }
 }
 
 /* define interfaces */
@@ -88,7 +146,11 @@ func (list *List) GetSize() uint64 {
     return (*list).size
 }
 
-func (list *List) Append(data Object) {
+func (list *List) IsEmpty() bool {
+    return list.GetSize() == 0
+}
+
+func (list *List) Append(data Object) bool {
     newItem := new(Node)
     (*newItem).data = data
     (*newItem).next = nil
@@ -97,11 +159,23 @@ func (list *List) Append(data Object) {
         (*list).head = newItem
         (*list).tail = (*list).head
     } else {
-        (*list).tail.next = newItem
+        oldNode := (*list).tail
+        (*oldNode).next = newItem
         (*list).tail = newItem
     }
 
     (*list).size++
+
+    return true
+}
+
+func (list *List) InsertAtHead(data Object) bool {
+    newNode := createNode(data)
+    // insert head
+    (*newNode).next = list.getHead()
+    list.head = newNode
+
+    return true
 }
 
 // TODO:insert
@@ -142,3 +216,58 @@ func (list *List) Next(curData Object) Object {
 
     return nil
 }
+
+// get data at index,index start from 0
+func (list *List) GetAt(index uint) Object {
+    size := list.GetSize()
+    if index >= size {
+        return nil
+    } else if index ==0 {
+        return list.First()
+    } else if index == (size - 1)) {
+        return list.Last()
+    } else {
+        item := list.getHead()
+        for i := 0; i < size; i++ {
+            if i == index
+                break
+
+            item = (*item).next
+        }
+
+        return item.getData()
+    }
+}
+
+func (list *List) InsertAt(index uint, data Object) bool {
+    size := list.GetSize()
+    if index > size { // out of index range
+        return false
+    } else if index == size { // add in list end
+        return list.Append(data)
+    } else if index == 0 { // insert at head
+        return list.InsertAtHead(data)
+    } else {
+        newNode := list.createNode(data)
+        prevIndex := index - 1
+        prevItem := list.getHead()
+        for i := 0; i < size; i++ {
+            if i == prevIndex
+                break
+            prevItem = (*prevItem).next
+        }
+
+        (*newNode).next = (*prevItem).next
+        (*prevItem).next = newNode
+
+        (*list).size++
+
+        return true
+    }
+}
+
+// remove all nodes
+func (list *List) Clear() {
+    list.Init()
+}
+
