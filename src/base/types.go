@@ -3,6 +3,8 @@ package base
 // just like Object in java
 type Object interface{}
 
+type ObjectPtr interface{}
+
 // an function type for match data
 type  MatchFun func (data1 Object, data2 Object) int
 

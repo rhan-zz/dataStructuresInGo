@@ -53,7 +53,7 @@ func (list *List) match(data1 Object, data2 Object) int {
     return matc(data1, data2)
 }
 
-func createNode(data Object) *Node {
+func (list *List) createNode(data Object) *Node {
     node := new(Node)
     (*node).data = data
     (*node).next = nil
@@ -83,7 +83,7 @@ func (list *List) insertAfterNode(node *Node, data Object) bool {
 }
 
 // remove node at index
-func (list *List) removeAt(index uint) Object{
+func (list *List) removeAt(index uint64) Object{
     size := list.GetSize()
     if index >= size { // out of rang
         return nil
@@ -92,16 +92,16 @@ func (list *List) removeAt(index uint) Object{
         (*list).head = nil
         (*list).tail = nil
         (*list).size = 0
-        retrun (*node).data
+        return (*node).data
     } else if index == 0 { // remove head
         node := list.getHead()
         (*list).head = (*node).next
         (*list).size--
 
-        return (*list).data
+        return (*node).data
     } else if index == (size -1) { // remove tail
         preNode := list.getHead()
-        for i := 2; i < size; i++ {
+        for i := uint64(2); i < size; i++ {
             preNode = (*preNode).next
         }
 
@@ -113,7 +113,7 @@ func (list *List) removeAt(index uint) Object{
         return (*tail).data
     } else { // middle
         preNode := list.getHead()
-        for i := 2; i < index; i++ {
+        for i := uint64(2); i < index; i++ {
             preNode = (*preNode).next
         }
 
@@ -129,16 +129,16 @@ func (list *List) removeAt(index uint) Object{
 
 /* define interfaces */
 
-func (list *List) Init(matchs ...MatchFun) {
+func (list *List) Init(yourMatch ...MatchFun) {
     
     (*list).size = 0
     (*list).head = nil
     (*list).tail = nil
 
-    if len(matchs) == 0 {
+    if len(yourMatch) == 0 {
         (*list).myMatch = nil
     } else {
-        (*list).myMatch = matchs[0]
+        (*list).myMatch = yourMatch[0]
     }
 }
 
@@ -170,7 +170,7 @@ func (list *List) Append(data Object) bool {
 }
 
 func (list *List) InsertAtHead(data Object) bool {
-    newNode := createNode(data)
+    newNode := list.createNode(data)
     // insert head
     (*newNode).next = list.getHead()
     list.head = newNode
@@ -218,19 +218,20 @@ func (list *List) Next(curData Object) Object {
 }
 
 // get data at index,index start from 0
-func (list *List) GetAt(index uint) Object {
+func (list *List) GetAt(index uint64) Object {
     size := list.GetSize()
     if index >= size {
         return nil
     } else if index ==0 {
         return list.First()
-    } else if index == (size - 1)) {
+    } else if index == (size - 1) {
         return list.Last()
     } else {
         item := list.getHead()
-        for i := 0; i < size; i++ {
-            if i == index
+        for i := uint64(0); i < size; i++ {
+            if i == index {
                 break
+            }
 
             item = (*item).next
         }
@@ -239,7 +240,7 @@ func (list *List) GetAt(index uint) Object {
     }
 }
 
-func (list *List) InsertAt(index uint, data Object) bool {
+func (list *List) InsertAt(index uint64, data Object) bool {
     size := list.GetSize()
     if index > size { // out of index range
         return false
@@ -251,9 +252,10 @@ func (list *List) InsertAt(index uint, data Object) bool {
         newNode := list.createNode(data)
         prevIndex := index - 1
         prevItem := list.getHead()
-        for i := 0; i < size; i++ {
-            if i == prevIndex
+        for i := uint64(0); i < size; i++ {
+            if i == prevIndex {
                 break
+            }
             prevItem = (*prevItem).next
         }
 

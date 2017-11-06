@@ -26,6 +26,7 @@ func match(data1 Object, data2 Object) int {
 
 
 func main(){
+    /*
     var lst List
     var plst *List = &lst
     plst.Init(match)
@@ -57,6 +58,25 @@ func main(){
         fmt.Println(r)
     } else {
         fmt.Println((*txt2).name)
-    }
+    }*/
+
+    dLst := new (DList)
+    a := 1
+    b := 2
+    c := 3
+
+    var d int
+
+    dLst.Append(a)
+    dLst.Append(b)
+    dLst.Append(c)
+
+    node := dLst.GetHead().GetNext()
+    fmt.Println(dLst.GetSize())
+
+    d = dLst.Remove(node).(int)
+
+    fmt.Println(dLst.GetSize())
+    fmt.Println(d)
 }
 
