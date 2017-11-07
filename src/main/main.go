@@ -2,7 +2,7 @@ package main
 
 import (
     "fmt"
-    . "lists"
+    . "collections"
     . "base"
 )
 
@@ -60,23 +60,33 @@ func main(){
         fmt.Println((*txt2).name)
     }*/
 
-    dLst := new (DList)
+    lst := new (Queue)
+    lst.Init()
+    /*
     a := 1
     b := 2
     c := 3
+    */
 
-    var d int
+    //var d int
+    lst.Enqueue("a")
+    lst.Enqueue("c")
+    lst.Enqueue("d")
+    
 
-    dLst.Append(a)
-    dLst.Append(b)
-    dLst.Append(c)
+    for ; lst.GetSize() > 0;  {
+        fmt.Println(lst.Dequeue().(string))
+    }
 
-    node := dLst.GetHead().GetNext()
-    fmt.Println(dLst.GetSize())
+   
+/*
+    node := lst.GetHead().GetNext()
+    fmt.Println(lst.GetSize())
 
-    d = dLst.Remove(node).(int)
+    d = lst.Remove(node).(int)
 
-    fmt.Println(dLst.GetSize())
+    fmt.Println(lst.GetSize())
     fmt.Println(d)
+    */
 }
 

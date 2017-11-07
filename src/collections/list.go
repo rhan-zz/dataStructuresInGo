@@ -5,11 +5,10 @@ author:heavy
 version:1.0
 */
 
-package lists
+package collections
 
 import (
    . "base"
-   "fmt"
 )
 
 /* define structures */
@@ -33,7 +32,6 @@ type List struct {
 
 // data1 equals to data2 return 0
 func defaultMatch(data1 Object, data2 Object) int {
-    fmt.Println("defaultMatch")
     if data1 == data2 {
         return 0
     } else {
@@ -83,7 +81,7 @@ func (list *List) insertAfterNode(node *Node, data Object) bool {
 }
 
 // remove node at index
-func (list *List) removeAt(index uint64) Object{
+func (list *List) RemoveAt(index uint64) Object{
     size := list.GetSize()
     if index >= size { // out of rang
         return nil
@@ -140,6 +138,7 @@ func (list *List) Init(yourMatch ...MatchFun) {
     } else {
         (*list).myMatch = yourMatch[0]
     }
+
 }
 
 func (list *List) GetSize() uint64 {
@@ -174,6 +173,7 @@ func (list *List) InsertAtHead(data Object) bool {
     // insert head
     (*newNode).next = list.getHead()
     list.head = newNode
+    (*list).size++
 
     return true
 }

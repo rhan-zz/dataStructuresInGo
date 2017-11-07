@@ -1,11 +1,11 @@
 /*
 Package list implements a simple library for list structure.
-
+double list
 author:heavy
 version:1.0
 */
 
-package lists
+package collections
 
 import (
 	. "base"
