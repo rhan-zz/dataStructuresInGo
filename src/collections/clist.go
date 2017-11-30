@@ -1,5 +1,4 @@
 /*
-Package list implements a simple library for list structure.
 circle list
 author:heavy
 version:1.0

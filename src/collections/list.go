@@ -125,6 +125,57 @@ func (list *List) RemoveAt(index uint64) Object{
     }
 }
 
+// remove data in the list
+func (list *List) Remove(data Object) bool {
+    if (data == nil || list.IsEmpty()) {
+        return false
+    }
+
+    head := list.getHead()
+
+    // remove head
+    if (list.match(head.getData(), data) == 0) {
+        (*list).head = nextNode(head)
+    } else {
+        // loop match data 
+        cur := head
+        nxt := nextNode(head)
+        for ; nxt != nil; nxt = nextNode(nxt) {
+            if list.match(data, nxt.getData()) == 0 {
+                (*cur).next = nextNode(nxt)
+                break
+            }
+
+            cur = nxt
+        }
+
+        if (nxt == nil) { // not in set
+            return false
+        }
+    }
+
+    (*list).size--
+
+    return true
+}
+
+func (list *List) IsMember(data Object) bool {
+    if (list.IsEmpty()) {
+        return false
+    }
+     // get head
+    
+    head := list.getHead()
+    // loop match data 
+    for i := head; i != nil; i = nextNode(i) {
+        if list.match(data, i.getData()) == 0 {
+            return true
+        }
+    }
+
+    return false
+}
+
 /* define interfaces */
 
 func (list *List) Init(yourMatch ...MatchFun) {
